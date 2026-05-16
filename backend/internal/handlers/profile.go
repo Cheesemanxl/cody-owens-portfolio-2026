@@ -26,12 +26,6 @@ func Profile(db *sql.DB) http.HandlerFunc {
 		err := db.QueryRowContext(r.Context(),
 			`SELECT id, provider, username, created_at FROM users WHERE id = ?`, userID,
 		).Scan(&p.ID, &p.Provider, &p.Username, &rawCreatedAt)
-		if t, parseErr := time.Parse("2006-01-02 15:04:05", rawCreatedAt); parseErr == nil {
-			p.CreatedAt = t.UTC().Format(time.RFC3339)
-		} else {
-			p.CreatedAt = rawCreatedAt
-		}
-
 		if errors.Is(err, sql.ErrNoRows) {
 			http.Error(w, "not found", http.StatusNotFound)
 			return
@@ -39,6 +33,12 @@ func Profile(db *sql.DB) http.HandlerFunc {
 		if err != nil {
 			http.Error(w, "internal error", http.StatusInternalServerError)
 			return
+		}
+
+		if t, parseErr := time.Parse("2006-01-02 15:04:05", rawCreatedAt); parseErr == nil {
+			p.CreatedAt = t.UTC().Format(time.RFC3339)
+		} else {
+			p.CreatedAt = rawCreatedAt
 		}
 
 		w.Header().Set("Content-Type", "application/json")
