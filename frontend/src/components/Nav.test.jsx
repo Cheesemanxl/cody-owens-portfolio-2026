@@ -35,9 +35,10 @@ describe('Nav', () => {
     expect(screen.getByRole('link', { name: 'Game' })).toHaveAttribute('href', '/game')
   })
 
-  it('shows Sign in when logged out', () => {
+  it('shows sign-in links when logged out', () => {
     renderNav({ user: null })
-    expect(screen.getByRole('link', { name: 'Sign in' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Sign in with GitHub' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Sign in with Google' })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Sign out' })).not.toBeInTheDocument()
   })
 
@@ -45,7 +46,8 @@ describe('Nav', () => {
     renderNav({ user: { userDetails: 'coder', userId: 'u1' } })
     expect(screen.getByRole('link', { name: 'coder' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Sign out' })).toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: 'Sign in' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Sign in with GitHub' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Sign in with Google' })).not.toBeInTheDocument()
   })
 
   it('links username to user profile', () => {
