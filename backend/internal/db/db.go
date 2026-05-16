@@ -7,7 +7,7 @@ import (
 )
 
 func Open(path string) (*sql.DB, error) {
-	db, err := sql.Open("sqlite", path)
+	db, err := sql.Open("sqlite", path+"?_locking_mode=EXCLUSIVE")
 	if err != nil {
 		return nil, err
 	}
