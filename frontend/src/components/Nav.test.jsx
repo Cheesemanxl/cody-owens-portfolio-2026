@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
 import Nav from './Nav'
 
-function renderNav(initialPath = '/') {
+function renderNav({ user = null, initialPath = '/' } = {}) {
   return render(
-    <MemoryRouter initialEntries={[initialPath]}>
-      <Nav />
-    </MemoryRouter>
+    <AuthContext.Provider value={{ user, loading: false }}>
+      <MemoryRouter initialEntries={[initialPath]}>
+        <Nav />
+      </MemoryRouter>
+    </AuthContext.Provider>
   )
 }
 
@@ -30,5 +33,17 @@ describe('Nav', () => {
   it('Game link points to /game', () => {
     renderNav()
     expect(screen.getByRole('link', { name: 'Game' })).toHaveAttribute('href', '/game')
+  })
+
+  it('shows Sign in when logged out', () => {
+    renderNav({ user: null })
+    expect(screen.getByRole('link', { name: 'Sign in' })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Sign out' })).not.toBeInTheDocument()
+  })
+
+  it('shows Sign out when logged in', () => {
+    renderNav({ user: { userDetails: 'coder', userId: 'u1' } })
+    expect(screen.getByRole('link', { name: 'Sign out' })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Sign in' })).not.toBeInTheDocument()
   })
 })

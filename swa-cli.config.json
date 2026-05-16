@@ -1,0 +1,11 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "portfolio": {
+      "appLocation": "frontend",
+      "outputLocation": "dist",
+      "appDevserverUrl": "http://localhost:5173",
+      "apiDevserverUrl": "http://localhost:8080"
+    }
+  }
+}
