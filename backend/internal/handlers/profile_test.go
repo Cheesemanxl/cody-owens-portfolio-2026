@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -37,5 +38,16 @@ func TestProfile_returnsUser(t *testing.T) {
 
 	if rr.Code != http.StatusOK {
 		t.Fatalf("got %d, want 200", rr.Code)
+	}
+
+	var body map[string]string
+	if err := json.NewDecoder(rr.Body).Decode(&body); err != nil {
+		t.Fatal(err)
+	}
+	if body["username"] != "coder" {
+		t.Errorf("username: got %q, want %q", body["username"], "coder")
+	}
+	if body["createdAt"] == "" {
+		t.Error("expected createdAt to be present")
 	}
 }

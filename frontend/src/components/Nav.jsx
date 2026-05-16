@@ -11,10 +11,16 @@ export default function Nav() {
       <div className={styles.links}>
         <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : undefined}>Home</NavLink>
         <NavLink to="/game" className={({ isActive }) => isActive ? styles.active : undefined}>Game</NavLink>
-        {user
-          ? <a href="/.auth/logout">Sign out</a>
-          : <a href="/.auth/login/github">Sign in</a>
-        }
+        {user ? (
+          <>
+            <NavLink to={`/profile/${user.userId}`} className={({ isActive }) => isActive ? styles.active : undefined}>
+              {user.userDetails}
+            </NavLink>
+            <a href="/.auth/logout">Sign out</a>
+          </>
+        ) : (
+          <a href="/.auth/login/github">Sign in</a>
+        )}
       </div>
     </nav>
   )

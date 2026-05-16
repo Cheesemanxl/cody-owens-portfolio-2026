@@ -41,9 +41,15 @@ describe('Nav', () => {
     expect(screen.queryByRole('link', { name: 'Sign out' })).not.toBeInTheDocument()
   })
 
-  it('shows Sign out when logged in', () => {
+  it('shows username and Sign out when logged in', () => {
     renderNav({ user: { userDetails: 'coder', userId: 'u1' } })
+    expect(screen.getByRole('link', { name: 'coder' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Sign out' })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Sign in' })).not.toBeInTheDocument()
+  })
+
+  it('links username to user profile', () => {
+    renderNav({ user: { userDetails: 'coder', userId: 'u1' } })
+    expect(screen.getByRole('link', { name: 'coder' })).toHaveAttribute('href', '/profile/u1')
   })
 })
