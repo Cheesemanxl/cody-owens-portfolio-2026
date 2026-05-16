@@ -19,7 +19,10 @@ export default function Nav() {
             <a href="/.auth/logout">Sign out</a>
           </>
         ) : (
-          <a href="/.auth/login/github">Sign in</a>
+          <>
+            <a href="/.auth/login/github">Sign in with GitHub</a>
+            <a href="/.auth/login/google">Sign in with Google</a>
+          </>
         )}
       </div>
     </nav>
