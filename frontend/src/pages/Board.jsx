@@ -15,6 +15,7 @@ export default function Board() {
   const { user, loading } = useAuth()
   const [cards, setCards] = useState([])
   const [drafts, setDrafts] = useState({ todo: '', inprogress: '', done: '' })
+  const [error, setError] = useState(null)
   const [dragOver, setDragOver] = useState(null)
   const dragging = useRef(null)
 
@@ -37,6 +38,8 @@ export default function Board() {
     })
     if (res.ok) {
       setCards(prev => prev.map(c => c.id === id ? { ...c, lane } : c))
+    } else {
+      setError('Failed to move card. Try again.')
     }
   }
 
@@ -52,6 +55,8 @@ export default function Board() {
       const card = await res.json()
       setCards(prev => [...prev, card])
       setDrafts(prev => ({ ...prev, [lane]: '' }))
+    } else {
+      setError('Failed to add card. Try again.')
     }
   }
 
@@ -59,6 +64,8 @@ export default function Board() {
     const res = await fetch(`/api/cards/${id}`, { method: 'DELETE' })
     if (res.ok) {
       setCards(prev => prev.filter(c => c.id !== id))
+    } else {
+      setError('Failed to delete card. Try again.')
     }
   }
 
@@ -79,6 +86,13 @@ export default function Board() {
   }
 
   return (
+    <>
+    {error && (
+      <div className={styles.error} role="alert">
+        {error}
+        <button className={styles.errorDismiss} onClick={() => setError(null)}>×</button>
+      </div>
+    )}
     <div className={styles.board}>
       {LANES.map((lane, laneIdx) => (
         <div
@@ -134,5 +148,6 @@ export default function Board() {
         </div>
       ))}
     </div>
+    </>
   )
 }

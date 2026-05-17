@@ -11,6 +11,7 @@ import (
 	"github.com/Cheesemanxl/cody-owens-portfolio-2026/backend/internal/auth"
 	"github.com/Cheesemanxl/cody-owens-portfolio-2026/backend/internal/db"
 	"github.com/Cheesemanxl/cody-owens-portfolio-2026/backend/internal/handlers"
+	apimiddleware "github.com/Cheesemanxl/cody-owens-portfolio-2026/backend/internal/middleware"
 )
 
 func main() {
@@ -27,6 +28,13 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+	r.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			r.Body = http.MaxBytesReader(w, r.Body, 64*1024)
+			next.ServeHTTP(w, r)
+		})
+	})
+	r.Use(apimiddleware.RateLimit)
 	r.Use(auth.Middleware)
 
 	r.Get("/api/me", handlers.Me(database))

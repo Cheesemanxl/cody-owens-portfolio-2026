@@ -22,6 +22,7 @@ func openTestDB(t *testing.T) *sql.DB {
 			id TEXT PRIMARY KEY,
 			provider TEXT NOT NULL,
 			username TEXT NOT NULL,
+			slug TEXT UNIQUE,
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 		)
 	`)

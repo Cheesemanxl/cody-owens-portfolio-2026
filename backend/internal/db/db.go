@@ -11,6 +11,7 @@ func Open(path string) (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	db.SetMaxOpenConns(1)
 	if err := migrate(db); err != nil {
 		return nil, err
 	}
@@ -26,6 +27,12 @@ func migrate(db *sql.DB) error {
 			created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
 		)
 	`)
+	if err != nil {
+		return err
+	}
+	// Add slug column for existing deployments that predate it
+	_, _ = db.Exec(`ALTER TABLE users ADD COLUMN slug TEXT`)
+	_, err = db.Exec(`CREATE UNIQUE INDEX IF NOT EXISTS users_slug_idx ON users(slug)`)
 	if err != nil {
 		return err
 	}

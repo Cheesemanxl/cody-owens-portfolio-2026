@@ -6,9 +6,9 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  frontend:
     runs-on: ubuntu-latest
-    name: Build and Test
+    name: Frontend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,3 +25,19 @@ jobs:
       - name: Test
         run: npm test -- --run
         working-directory: frontend
+
+  backend:
+    runs-on: ubuntu-latest
+    name: Backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+          cache-dependency-path: backend/go.sum
+      - name: Build
+        run: go build ./...
+        working-directory: backend
+      - name: Test
+        run: go test ./...
+        working-directory: backend
