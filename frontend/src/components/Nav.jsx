@@ -13,6 +13,9 @@ export default function Nav() {
       <div className={styles.links}>
         <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : undefined}>Home</NavLink>
         <NavLink to="/game" className={({ isActive }) => isActive ? styles.active : undefined}>Game</NavLink>
+        {user && (
+          <NavLink to="/board" className={({ isActive }) => isActive ? styles.active : undefined}>Board</NavLink>
+        )}
         {user ? (
           <>
             <NavLink to={`/profile/${user.userId}`} className={({ isActive }) => isActive ? styles.active : undefined}>

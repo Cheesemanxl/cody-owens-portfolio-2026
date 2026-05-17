@@ -19,6 +19,14 @@
     {
       "route": "/api/me",
       "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/cards",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/cards/*",
+      "allowedRoles": ["authenticated"]
     }
   ],
   "responseOverrides": {
