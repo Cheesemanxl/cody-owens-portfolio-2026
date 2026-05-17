@@ -43,6 +43,12 @@ func TestMiddleware_setsPrincipalInContext(t *testing.T) {
 	if got.UserDetails != want.UserDetails {
 		t.Errorf("UserDetails: got %q, want %q", got.UserDetails, want.UserDetails)
 	}
+	if got.IdentityProvider != want.IdentityProvider {
+		t.Errorf("IdentityProvider: got %q, want %q", got.IdentityProvider, want.IdentityProvider)
+	}
+	if len(got.UserRoles) != len(want.UserRoles) || (len(want.UserRoles) > 0 && got.UserRoles[0] != want.UserRoles[0]) {
+		t.Errorf("UserRoles: got %v, want %v", got.UserRoles, want.UserRoles)
+	}
 }
 
 func TestMiddleware_noHeader(t *testing.T) {

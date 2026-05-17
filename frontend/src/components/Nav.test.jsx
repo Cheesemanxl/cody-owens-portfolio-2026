@@ -50,8 +50,23 @@ describe('Nav', () => {
     expect(screen.queryByRole('link', { name: 'Sign in with Google' })).not.toBeInTheDocument()
   })
 
-  it('links username to user profile', () => {
+  it('links username to userId when no slug', () => {
     renderNav({ user: { userDetails: 'coder', userId: 'u1' } })
     expect(screen.getByRole('link', { name: 'coder' })).toHaveAttribute('href', '/profile/u1')
+  })
+
+  it('links username to slug when slug is present', () => {
+    renderNav({ user: { userDetails: 'coder', userId: 'u1', slug: 'coder' } })
+    expect(screen.getByRole('link', { name: 'coder' })).toHaveAttribute('href', '/profile/coder')
+  })
+
+  it('shows Task Board link when logged in', () => {
+    renderNav({ user: { userDetails: 'coder', userId: 'u1' } })
+    expect(screen.getByRole('link', { name: 'Task Board' })).toBeInTheDocument()
+  })
+
+  it('hides Task Board link when logged out', () => {
+    renderNav({ user: null })
+    expect(screen.queryByRole('link', { name: 'Task Board' })).not.toBeInTheDocument()
   })
 })
