@@ -1,3 +1,40 @@
+.unauth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  padding: 4rem 1.5rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.unauthCopy {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.unauthActions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.loginBtn {
+  padding: 0.6rem 1.25rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: opacity 0.15s;
+}
+
+.loginBtn:hover {
+  color: #fff;
+  opacity: 0.85;
+}
+
 .error {
   display: flex;
   align-items: center;

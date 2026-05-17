@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import styles from './Board.module.css'
 
@@ -28,7 +27,18 @@ export default function Board() {
   }, [user])
 
   if (loading) return null
-  if (!user) return <Navigate to="/" replace />
+  if (!user) return (
+    <div className={styles.unauth}>
+      <h1>Task Board</h1>
+      <p className={styles.unauthCopy}>
+        Track what you're working on with a personal kanban board — organize tasks across To Do, In Progress, and Done.
+      </p>
+      <div className={styles.unauthActions}>
+        <a href="/.auth/login/github" className={styles.loginBtn}>Sign in with GitHub</a>
+        <a href="/.auth/login/google" className={styles.loginBtn}>Sign in with Google</a>
+      </div>
+    </div>
+  )
 
   async function patchLane(id, lane) {
     const res = await fetch(`/api/cards/${id}`, {

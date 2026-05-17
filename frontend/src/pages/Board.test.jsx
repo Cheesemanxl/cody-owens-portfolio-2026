@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { MemoryRouter, Routes, Route } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 import Board from './Board'
 
@@ -8,11 +8,8 @@ const mockUser = { userId: 'u1', userDetails: 'coder', identityProvider: 'github
 function renderBoard({ user = mockUser, loading = false } = {}) {
   return render(
     <AuthContext.Provider value={{ user, loading }}>
-      <MemoryRouter initialEntries={['/board']}>
-        <Routes>
-          <Route path="/board" element={<Board />} />
-          <Route path="/" element={<div>Home</div>} />
-        </Routes>
+      <MemoryRouter>
+        <Board />
       </MemoryRouter>
     </AuthContext.Provider>
   )
@@ -27,10 +24,15 @@ function stubFetch(cards = []) {
 describe('Board', () => {
   afterEach(() => vi.restoreAllMocks())
 
-  it('redirects to home when not authenticated', () => {
-    stubFetch()
+  it('shows heading when not authenticated', () => {
     renderBoard({ user: null })
-    expect(screen.getByText('Home')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Task Board' })).toBeInTheDocument()
+  })
+
+  it('shows sign-in links when not authenticated', () => {
+    renderBoard({ user: null })
+    expect(screen.getByRole('link', { name: 'Sign in with GitHub' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Sign in with Google' })).toBeInTheDocument()
   })
 
   it('renders three lane headings', async () => {
