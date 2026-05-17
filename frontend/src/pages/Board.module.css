@@ -14,6 +14,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  transition: border-color 0.15s;
+}
+
+.dragOver {
+  border-color: var(--accent);
 }
 
 .columnHeader {
@@ -34,20 +39,46 @@
 
 .card {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.6rem 0.75rem;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.6rem;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 0.9rem;
+  cursor: grab;
 }
 
-.card span {
+.card:active {
+  cursor: grabbing;
+}
+
+.cardTitle {
   flex: 1;
   word-break: break-word;
   line-height: 1.4;
+}
+
+.moveBtn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.moveBtn:hover:not(:disabled) {
+  color: var(--text);
+}
+
+.moveBtn:disabled {
+  opacity: 0.2;
+  cursor: default;
 }
 
 .deleteBtn {
@@ -55,12 +86,12 @@
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   line-height: 1;
   cursor: pointer;
   padding: 0 0.15rem;
   transition: color 0.15s;
-  margin-top: -0.1rem;
+  margin-left: 0.1rem;
 }
 
 .deleteBtn:hover {

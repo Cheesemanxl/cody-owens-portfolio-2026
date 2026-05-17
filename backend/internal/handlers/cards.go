@@ -90,6 +90,44 @@ func CreateCard(db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func MoveCard(db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		p := auth.GetPrincipal(r)
+		if p == nil {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		var body struct {
+			Lane string `json:"lane"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			http.Error(w, "bad request", http.StatusBadRequest)
+			return
+		}
+		if !validLanes[body.Lane] {
+			http.Error(w, "bad request", http.StatusBadRequest)
+			return
+		}
+
+		cardID := chi.URLParam(r, "id")
+		result, err := db.ExecContext(r.Context(),
+			`UPDATE cards SET lane = ? WHERE id = ? AND user_id = ?`,
+			body.Lane, cardID, p.UserID,
+		)
+		if err != nil {
+			http.Error(w, "internal error", http.StatusInternalServerError)
+			return
+		}
+		if n, _ := result.RowsAffected(); n == 0 {
+			http.Error(w, "not found", http.StatusNotFound)
+			return
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+	}
+}
+
 func DeleteCard(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		p := auth.GetPrincipal(r)
