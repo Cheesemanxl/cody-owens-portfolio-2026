@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import styles from './Nav.module.css'
 
 export default function Nav() {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
 
   return (
     <nav className={styles.nav}>
@@ -13,20 +13,24 @@ export default function Nav() {
       <div className={styles.links}>
         <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : undefined}>Home</NavLink>
         <NavLink to="/game" className={({ isActive }) => isActive ? styles.active : undefined}>Game</NavLink>
-        {user && (
-          <NavLink to="/board" className={({ isActive }) => isActive ? styles.active : undefined}>Task Board</NavLink>
-        )}
-        {user ? (
+        {!loading && (
           <>
-            <NavLink to={`/profile/${user.userId}`} className={({ isActive }) => isActive ? styles.active : undefined}>
-              {user.userDetails}
-            </NavLink>
-            <a href="/.auth/logout">Sign out</a>
-          </>
-        ) : (
-          <>
-            <a href="/.auth/login/github">Sign in with GitHub</a>
-            <a href="/.auth/login/google">Sign in with Google</a>
+            {user && (
+              <NavLink to="/board" className={({ isActive }) => isActive ? styles.active : undefined}>Task Board</NavLink>
+            )}
+            {user ? (
+              <>
+                <NavLink to={`/profile/${user.userId}`} className={({ isActive }) => isActive ? styles.active : undefined}>
+                  {user.userDetails}
+                </NavLink>
+                <a href="/.auth/logout">Sign out</a>
+              </>
+            ) : (
+              <>
+                <a href="/.auth/login/github">Sign in with GitHub</a>
+                <a href="/.auth/login/google">Sign in with Google</a>
+              </>
+            )}
           </>
         )}
       </div>
