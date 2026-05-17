@@ -19,10 +19,10 @@ describe('Nav', () => {
     expect(screen.getByText('Cody Owens')).toBeInTheDocument()
   })
 
-  it('renders Home and Game links', () => {
+  it('renders Home and Event Sourcing Game links', () => {
     renderNav()
     expect(screen.getByRole('link', { name: 'Home' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Game' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Event Sourcing Game' })).toBeInTheDocument()
   })
 
   it('Home link points to /', () => {
@@ -30,9 +30,9 @@ describe('Nav', () => {
     expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/')
   })
 
-  it('Game link points to /game', () => {
+  it('Event Sourcing Game link points to /game', () => {
     renderNav()
-    expect(screen.getByRole('link', { name: 'Game' })).toHaveAttribute('href', '/game')
+    expect(screen.getByRole('link', { name: 'Event Sourcing Game' })).toHaveAttribute('href', '/game')
   })
 
   it('shows sign-in links when logged out', () => {

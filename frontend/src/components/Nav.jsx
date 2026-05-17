@@ -12,7 +12,7 @@ export default function Nav() {
       </NavLink>
       <div className={styles.links}>
         <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : undefined}>Home</NavLink>
-        <NavLink to="/game" className={({ isActive }) => isActive ? styles.active : undefined}>Game</NavLink>
+        <NavLink to="/game" className={({ isActive }) => isActive ? styles.active : undefined}>Event Sourcing Game</NavLink>
         <NavLink to="/board" className={({ isActive }) => isActive ? styles.active : undefined}>Task Board</NavLink>
         {!loading && (
           <>
