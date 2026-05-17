@@ -7,8 +7,8 @@ describe('Game', () => {
     expect(screen.getByRole('heading', { name: 'Tower Defense' })).toBeInTheDocument()
   })
 
-  it('renders the coming soon subtitle', () => {
+  it('renders the start button before a game begins', () => {
     render(<Game />)
-    expect(screen.getByText(/Coming soon/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Start Game' })).toBeInTheDocument()
   })
 })

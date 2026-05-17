@@ -1,0 +1,65 @@
+.log {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  height: 100%;
+  min-height: 384px;
+  max-height: 600px;
+  overflow: hidden;
+}
+
+.header {
+  padding: 0.6rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.count {
+  font-weight: 400;
+}
+
+.entries {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0.25rem 0;
+}
+
+.entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.2rem 0.85rem;
+  font-size: 0.72rem;
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.entry:last-child {
+  border-bottom: none;
+}
+
+.seq {
+  color: var(--text-muted);
+  min-width: 2.5rem;
+  flex-shrink: 0;
+}
+
+.type {
+  font-weight: 600;
+  min-width: 11rem;
+  flex-shrink: 0;
+}
+
+.detail {
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

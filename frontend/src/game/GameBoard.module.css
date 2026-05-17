@@ -1,0 +1,95 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--cell));
+  grid-template-rows: repeat(var(--rows), var(--cell));
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.cell {
+  width: var(--cell);
+  height: var(--cell);
+  border: 1px solid var(--border);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s;
+}
+
+.buildable {
+  background: #14221a;
+}
+
+.path {
+  background: #2a1e10;
+  cursor: default;
+}
+
+.entry {
+  background: #0e2a14;
+}
+
+.exit {
+  background: #2a100e;
+}
+
+.placeable {
+  cursor: pointer;
+}
+
+.placeable:hover {
+  background: #1e3a28;
+}
+
+.range {
+  background: #1a2a3a;
+}
+
+.label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Tower */
+.tower {
+  width: 72%;
+  height: 72%;
+  background: var(--accent);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #fff;
+  box-shadow: 0 0 8px var(--accent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Enemy — overlapping circles */
+.enemy {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #dc2626;
+  border: 2px solid #fca5a5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  z-index: 10;
+  pointer-events: none;
+  animation: pop 0.15s ease-out;
+}
+
+@keyframes pop {
+  from { transform: scale(0.6); opacity: 0.5; }
+  to   { transform: scale(1);   opacity: 1; }
+}
