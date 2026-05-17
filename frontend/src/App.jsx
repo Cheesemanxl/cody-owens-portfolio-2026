@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Nav from './components/Nav'
+import ErrorBoundary from './components/ErrorBoundary'
 import Home from './pages/Home'
 import Game from './pages/Game'
 import Board from './pages/Board'
@@ -8,7 +9,7 @@ import NotFound from './pages/NotFound'
 
 export default function App() {
   return (
-    <>
+    <ErrorBoundary>
       <Nav />
       <main>
         <Routes>
@@ -19,6 +20,6 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-    </>
+    </ErrorBoundary>
   )
 }

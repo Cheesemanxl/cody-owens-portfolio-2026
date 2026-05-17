@@ -47,6 +47,10 @@ func Cards(db *sql.DB) http.HandlerFunc {
 			}
 			cards = append(cards, c)
 		}
+		if err := rows.Err(); err != nil {
+			http.Error(w, "internal error", http.StatusInternalServerError)
+			return
+		}
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(cards)
@@ -69,7 +73,7 @@ func CreateCard(db *sql.DB) http.HandlerFunc {
 			http.Error(w, "bad request", http.StatusBadRequest)
 			return
 		}
-		if !validLanes[body.Lane] || body.Title == "" {
+		if !validLanes[body.Lane] || body.Title == "" || len(body.Title) > 500 {
 			http.Error(w, "bad request", http.StatusBadRequest)
 			return
 		}

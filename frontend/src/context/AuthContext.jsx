@@ -14,7 +14,10 @@ export function AuthProvider({ children }) {
         const principal = data.clientPrincipal ?? null
         setUser(principal)
         if (principal) {
-          fetch('/api/me').catch(() => {})
+          fetch('/api/me')
+            .then(r => r.ok ? r.json() : null)
+            .then(me => { if (me?.slug) setUser(prev => ({ ...prev, slug: me.slug })) })
+            .catch(() => {})
         }
       } catch {
         setUser(null)

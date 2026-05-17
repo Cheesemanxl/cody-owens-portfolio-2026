@@ -24,7 +24,8 @@ func Profile(db *sql.DB) http.HandlerFunc {
 		var p profileResponse
 		var rawCreatedAt string
 		err := db.QueryRowContext(r.Context(),
-			`SELECT id, provider, username, created_at FROM users WHERE id = ?`, userID,
+			`SELECT id, provider, username, created_at FROM users WHERE slug = ? OR id = ? LIMIT 1`,
+			userID, userID,
 		).Scan(&p.ID, &p.Provider, &p.Username, &rawCreatedAt)
 		if errors.Is(err, sql.ErrNoRows) {
 			http.Error(w, "not found", http.StatusNotFound)

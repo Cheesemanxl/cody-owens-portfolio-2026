@@ -20,7 +20,7 @@ export default function Nav() {
             )}
             {user ? (
               <>
-                <NavLink to={`/profile/${user.userId}`} className={({ isActive }) => isActive ? styles.active : undefined}>
+                <NavLink to={`/profile/${user.slug ?? user.userId}`} className={({ isActive }) => isActive ? styles.active : undefined}>
                   {user.userDetails}
                 </NavLink>
                 <a href="/.auth/logout">Sign out</a>

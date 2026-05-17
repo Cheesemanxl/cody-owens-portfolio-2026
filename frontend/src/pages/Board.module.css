@@ -1,3 +1,27 @@
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  background: #3b1a1a;
+  border: 1px solid #7f2020;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #f87171;
+}
+
+.errorDismiss {
+  background: none;
+  border: none;
+  color: #f87171;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
