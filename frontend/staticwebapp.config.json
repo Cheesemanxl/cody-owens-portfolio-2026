@@ -31,7 +31,7 @@
   ],
   "responseOverrides": {
     "401": {
-      "redirect": "/.auth/login/github",
+      "redirect": "/",
       "statusCode": 302
     }
   },
