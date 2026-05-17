@@ -65,8 +65,8 @@ describe('Nav', () => {
     expect(screen.getByRole('link', { name: 'Task Board' })).toBeInTheDocument()
   })
 
-  it('hides Task Board link when logged out', () => {
+  it('shows Task Board link when logged out', () => {
     renderNav({ user: null })
-    expect(screen.queryByRole('link', { name: 'Task Board' })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Task Board' })).toBeInTheDocument()
   })
 })
