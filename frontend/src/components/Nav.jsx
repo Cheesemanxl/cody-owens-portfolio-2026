@@ -7,7 +7,9 @@ export default function Nav() {
 
   return (
     <nav className={styles.nav}>
-      <NavLink to="/" className={styles.brand}>Cody Owens</NavLink>
+      <NavLink to="/" className={styles.brand}>
+        <img src="/chibi-cody.png" alt="" className={styles.chibi} />Cody Owens
+      </NavLink>
       <div className={styles.links}>
         <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : undefined}>Home</NavLink>
         <NavLink to="/game" className={({ isActive }) => isActive ? styles.active : undefined}>Game</NavLink>

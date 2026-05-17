@@ -2,10 +2,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.5rem;
-  height: 56px;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  min-height: 56px;
   border-bottom: 1px solid var(--border);
   background: var(--surface);
+}
+
+.chibi {
+  height: 1.1em;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 0.4rem;
+  image-rendering: pixelated;
 }
 
 .brand {
