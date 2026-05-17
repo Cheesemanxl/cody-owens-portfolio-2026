@@ -1,0 +1,153 @@
+.viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.close {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.close:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.scrubber {
+  flex: 1;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.counter {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 5rem;
+  text-align: right;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btnPlay {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  padding: 0.4rem 1.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.btnPlay:hover {
+  opacity: 0.85;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.eventPane {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.paneHeader {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.eventType {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.json {
+  padding: 0.85rem;
+  font-size: 0.78rem;
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  color: var(--text);
+  white-space: pre;
+  overflow-x: auto;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.stateSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 0.85rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.stateSummary b {
+  color: var(--text);
+}
+
+.replayNote {
+  padding: 0.5rem 0.85rem 0.75rem;
+  font-size: 0.7rem;
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+
+.boardPane {
+  display: flex;
+  justify-content: flex-start;
+}
