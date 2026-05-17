@@ -125,7 +125,7 @@ export default function Game() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <h1>Tower Defense</h1>
+        <h1>Event Sourcing Game</h1>
         <p className={styles.subtitle}>
           {state
             ? `Wave ${state.wave} · ${state.lives} ❤ remaining`

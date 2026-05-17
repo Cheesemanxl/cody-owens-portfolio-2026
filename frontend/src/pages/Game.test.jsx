@@ -4,7 +4,7 @@ import Game from './Game'
 describe('Game', () => {
   it('renders the page heading', () => {
     render(<Game />)
-    expect(screen.getByRole('heading', { name: 'Tower Defense' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Event Sourcing Game' })).toBeInTheDocument()
   })
 
   it('renders the start button before a game begins', () => {
