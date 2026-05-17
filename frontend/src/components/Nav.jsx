@@ -13,11 +13,9 @@ export default function Nav() {
       <div className={styles.links}>
         <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : undefined}>Home</NavLink>
         <NavLink to="/game" className={({ isActive }) => isActive ? styles.active : undefined}>Game</NavLink>
+        <NavLink to="/board" className={({ isActive }) => isActive ? styles.active : undefined}>Task Board</NavLink>
         {!loading && (
           <>
-            {user && (
-              <NavLink to="/board" className={({ isActive }) => isActive ? styles.active : undefined}>Task Board</NavLink>
-            )}
             {user ? (
               <>
                 <NavLink to={`/profile/${user.slug ?? user.userId}`} className={({ isActive }) => isActive ? styles.active : undefined}>
