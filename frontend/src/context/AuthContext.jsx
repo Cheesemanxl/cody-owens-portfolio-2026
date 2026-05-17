@@ -12,10 +12,10 @@ export function AuthProvider({ children }) {
         const res = await fetch('/.auth/me')
         const data = await res.json()
         const principal = data.clientPrincipal ?? null
-        if (principal) {
-          await fetch('/api/me').catch(() => {})
-        }
         setUser(principal)
+        if (principal) {
+          fetch('/api/me').catch(() => {})
+        }
       } catch {
         setUser(null)
       } finally {
