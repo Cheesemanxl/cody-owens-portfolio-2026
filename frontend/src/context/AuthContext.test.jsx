@@ -7,7 +7,13 @@ function Consumer() {
   return <span>{user ? user.userDetails : 'logged out'}</span>
 }
 
-function stubFetch({ principal = null } = {}) {
+function SlugConsumer() {
+  const { user, loading } = useAuth()
+  if (loading) return <span>loading</span>
+  return <span data-testid="slug">{user?.slug ?? 'no-slug'}</span>
+}
+
+function stubFetch({ principal = null, meBody = { id: 'u1', username: 'coder', provider: 'github', slug: 'coder' } } = {}) {
   const spy = vi.fn()
   spy.mockImplementation(url => {
     if (url === '/.auth/me') {
@@ -15,8 +21,7 @@ function stubFetch({ principal = null } = {}) {
         json: () => Promise.resolve({ clientPrincipal: principal }),
       })
     }
-    // /api/me — return minimal ok response
-    return Promise.resolve({ ok: true })
+    return Promise.resolve({ ok: true, json: () => Promise.resolve(meBody) })
   })
   vi.stubGlobal('fetch', spy)
   return spy
@@ -72,5 +77,20 @@ describe('AuthContext', () => {
     vi.stubGlobal('fetch', () => Promise.reject(new Error('network error')))
     renderWithAuth()
     await waitFor(() => expect(screen.getByText('logged out')).toBeInTheDocument())
+  })
+
+  it('merges slug from /api/me into user state', async () => {
+    stubFetch({
+      principal: { identityProvider: 'github', userId: 'u1', userDetails: 'coder' },
+      meBody: { id: 'u1', username: 'coder', provider: 'github', slug: 'coder' },
+    })
+    render(
+      <AuthProvider>
+        <SlugConsumer />
+      </AuthProvider>
+    )
+    await waitFor(() =>
+      expect(screen.getByTestId('slug')).toHaveTextContent('coder')
+    )
   })
 })

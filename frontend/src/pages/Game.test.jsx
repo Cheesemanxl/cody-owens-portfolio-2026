@@ -7,8 +7,8 @@ describe('Game', () => {
     expect(screen.getByRole('heading', { name: 'Tower Defense' })).toBeInTheDocument()
   })
 
-  it('renders the canvas placeholder', () => {
+  it('renders the coming soon subtitle', () => {
     render(<Game />)
-    expect(screen.getByText('Game canvas will render here')).toBeInTheDocument()
+    expect(screen.getByText(/Coming soon/)).toBeInTheDocument()
   })
 })

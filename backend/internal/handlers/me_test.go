@@ -29,6 +29,18 @@ func openTestDB(t *testing.T) *sql.DB {
 	if err != nil {
 		t.Fatal(err)
 	}
+	_, err = db.Exec(`
+		CREATE TABLE cards (
+			id TEXT PRIMARY KEY,
+			user_id TEXT NOT NULL,
+			lane TEXT NOT NULL CHECK(lane IN ('todo', 'inprogress', 'done')),
+			title TEXT NOT NULL,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+		)
+	`)
+	if err != nil {
+		t.Fatal(err)
+	}
 	t.Cleanup(func() { db.Close() })
 	return db
 }
@@ -65,6 +77,53 @@ func TestMe_createsUser(t *testing.T) {
 	}
 	if body["username"] != "coder" {
 		t.Errorf("username: got %q, want %q", body["username"], "coder")
+	}
+	if body["slug"] != "coder" {
+		t.Errorf("slug: got %q, want %q", body["slug"], "coder")
+	}
+}
+
+func TestMe_slugCollision(t *testing.T) {
+	db := openTestDB(t)
+
+	p1 := &auth.Principal{UserID: "u1", IdentityProvider: "github", UserDetails: "coder"}
+	Me(db).ServeHTTP(httptest.NewRecorder(), requestWithPrincipal(p1))
+
+	// Second user with same username but different provider gets disambiguated slug
+	p2 := &auth.Principal{UserID: "u2", IdentityProvider: "google", UserDetails: "coder"}
+	rr := httptest.NewRecorder()
+	Me(db).ServeHTTP(rr, requestWithPrincipal(p2))
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("got %d, want 200", rr.Code)
+	}
+	var body map[string]string
+	json.NewDecoder(rr.Body).Decode(&body)
+	if body["slug"] != "coder-google" {
+		t.Errorf("slug: got %q, want %q", body["slug"], "coder-google")
+	}
+}
+
+func TestMakeSlug(t *testing.T) {
+	cases := []struct {
+		input string
+		want  string
+	}{
+		{"Cheesemanxl", "cheesemanxl"},
+		{"coder", "coder"},
+		{"john.doe", "john-doe"},
+		{"hello world", "hello-world"},
+		{"user@gmail.com", "user"},
+		{"user.name+tag@example.com", "user-name-tag"},
+		{"123user", "123user"},
+		{"---special---chars---", "special-chars"},
+		{"multiple...dots", "multiple-dots"},
+	}
+	for _, c := range cases {
+		got := makeSlug(c.input)
+		if got != c.want {
+			t.Errorf("makeSlug(%q) = %q, want %q", c.input, got, c.want)
+		}
 	}
 }
 
