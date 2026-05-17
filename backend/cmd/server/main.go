@@ -31,6 +31,10 @@ func main() {
 
 	r.Get("/api/me", handlers.Me(database))
 	r.Get("/api/profile/{userId}", handlers.Profile(database))
+	r.Get("/api/cards", handlers.Cards(database))
+	r.Post("/api/cards", handlers.CreateCard(database))
+	r.Patch("/api/cards/{id}", handlers.MoveCard(database))
+	r.Delete("/api/cards/{id}", handlers.DeleteCard(database))
 
 	log.Println("backend listening on :8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
