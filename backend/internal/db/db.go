@@ -45,5 +45,18 @@ func migrate(db *sql.DB) error {
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 		)
 	`)
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS replays (
+			id           TEXT PRIMARY KEY,
+			user_id      TEXT NOT NULL REFERENCES users(id),
+			events       TEXT NOT NULL,
+			won          INTEGER NOT NULL DEFAULT 0,
+			wave_reached INTEGER NOT NULL DEFAULT 1,
+			created_at   DATETIME DEFAULT CURRENT_TIMESTAMP
+		)
+	`)
 	return err
 }

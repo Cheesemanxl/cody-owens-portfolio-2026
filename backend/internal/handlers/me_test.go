@@ -41,6 +41,19 @@ func openTestDB(t *testing.T) *sql.DB {
 	if err != nil {
 		t.Fatal(err)
 	}
+	_, err = db.Exec(`
+		CREATE TABLE replays (
+			id TEXT PRIMARY KEY,
+			user_id TEXT NOT NULL,
+			events TEXT NOT NULL,
+			won INTEGER NOT NULL DEFAULT 0,
+			wave_reached INTEGER NOT NULL DEFAULT 1,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+		)
+	`)
+	if err != nil {
+		t.Fatal(err)
+	}
 	t.Cleanup(func() { db.Close() })
 	return db
 }
