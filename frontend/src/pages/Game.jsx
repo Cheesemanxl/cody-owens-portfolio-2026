@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
 import {
   ENEMIES_BASE, ENEMIES_SCALE, ENEMY_BASE_HP, ENEMY_HP_SCALE,
   MAX_WAVES, TICK_MS, PATH_SET,
@@ -17,8 +18,10 @@ import styles from './Game.module.css'
 let towerSeq = 0
 
 export default function Game() {
+  const { user } = useContext(AuthContext)
   const [game, setGame] = useState({ events: [], state: null })
   const [showReplay, setShowReplay] = useState(false)
+  const [saveStatus, setSaveStatus] = useState(null) // null | 'saving' | 'saved' | 'error'
   const tickRef  = useRef(0)
   const loopRef  = useRef(null)
 
@@ -35,10 +38,30 @@ export default function Game() {
 
   // ── Game actions ──────────────────────────────────────────────────────────
 
+  async function handleSaveReplay() {
+    if (!user || saveStatus === 'saving' || saveStatus === 'saved') return
+    setSaveStatus('saving')
+    try {
+      const res = await fetch('/api/replays', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          events: game.events,
+          won: game.state?.won ?? false,
+          waveReached: game.state?.wave ?? 1,
+        }),
+      })
+      setSaveStatus(res.ok ? 'saved' : 'error')
+    } catch {
+      setSaveStatus('error')
+    }
+  }
+
   function handleStart() {
     stopLoop()
     towerSeq = 0
     setShowReplay(false)
+    setSaveStatus(null)
     const ev = evGameStarted()
     setGame({ events: [ev], state: reducer(null, ev) })
   }
@@ -199,6 +222,18 @@ export default function Game() {
                     <button className={styles.btnSecondary} onClick={() => setShowReplay(true)}>
                       Step-through Replay
                     </button>
+                    {user && (
+                      <button
+                        className={styles.btnSecondary}
+                        onClick={handleSaveReplay}
+                        disabled={saveStatus === 'saving' || saveStatus === 'saved'}
+                      >
+                        {saveStatus === 'saving' ? 'Saving…'
+                          : saveStatus === 'saved' ? '✓ Saved'
+                          : saveStatus === 'error' ? 'Retry Save'
+                          : 'Save Replay'}
+                      </button>
+                    )}
                   </div>
                 </div>
               )}

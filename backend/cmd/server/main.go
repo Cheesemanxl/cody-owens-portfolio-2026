@@ -30,7 +30,7 @@ func main() {
 	r.Use(middleware.Recoverer)
 	r.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			r.Body = http.MaxBytesReader(w, r.Body, 64*1024)
+			r.Body = http.MaxBytesReader(w, r.Body, 512*1024)
 			next.ServeHTTP(w, r)
 		})
 	})
@@ -43,6 +43,8 @@ func main() {
 	r.Post("/api/cards", handlers.CreateCard(database))
 	r.Patch("/api/cards/{id}", handlers.MoveCard(database))
 	r.Delete("/api/cards/{id}", handlers.DeleteCard(database))
+	r.Post("/api/replays", handlers.SaveReplay(database))
+	r.Get("/api/replays/{userId}", handlers.ListReplays(database))
 
 	log.Println("backend listening on :8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
