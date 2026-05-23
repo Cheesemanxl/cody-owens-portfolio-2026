@@ -17,6 +17,7 @@ export default function Board() {
   const [error, setError] = useState(null)
   const [dragOver, setDragOver] = useState(null)
   const dragging = useRef(null)
+  const tempSeq  = useRef(0)
 
   useEffect(() => {
     if (!user) return
@@ -41,14 +42,15 @@ export default function Board() {
   )
 
   async function patchLane(id, lane) {
+    const prevLane = cards.find(c => c.id === id)?.lane
+    setCards(prev => prev.map(c => c.id === id ? { ...c, lane } : c))
     const res = await fetch(`/api/cards/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lane }),
     })
-    if (res.ok) {
-      setCards(prev => prev.map(c => c.id === id ? { ...c, lane } : c))
-    } else {
+    if (!res.ok) {
+      setCards(prev => prev.map(c => c.id === id ? { ...c, lane: prevLane } : c))
       setError('Failed to move card. Try again.')
     }
   }
@@ -56,6 +58,9 @@ export default function Board() {
   async function addCard(lane) {
     const title = drafts[lane].trim()
     if (!title) return
+    const tempId = `temp-${++tempSeq.current}`
+    setCards(prev => [...prev, { id: tempId, lane, title }])
+    setDrafts(prev => ({ ...prev, [lane]: '' }))
     const res = await fetch('/api/cards', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,18 +68,19 @@ export default function Board() {
     })
     if (res.ok) {
       const card = await res.json()
-      setCards(prev => [...prev, card])
-      setDrafts(prev => ({ ...prev, [lane]: '' }))
+      setCards(prev => prev.map(c => c.id === tempId ? card : c))
     } else {
+      setCards(prev => prev.filter(c => c.id !== tempId))
       setError('Failed to add card. Try again.')
     }
   }
 
   async function deleteCard(id) {
+    const removed = cards.find(c => c.id === id)
+    setCards(prev => prev.filter(c => c.id !== id))
     const res = await fetch(`/api/cards/${id}`, { method: 'DELETE' })
-    if (res.ok) {
-      setCards(prev => prev.filter(c => c.id !== id))
-    } else {
+    if (!res.ok) {
+      setCards(prev => [...prev, removed])
       setError('Failed to delete card. Try again.')
     }
   }
